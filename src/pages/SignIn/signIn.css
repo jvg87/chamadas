@@ -9,11 +9,13 @@
 
 .login{
     background-color: #eaeaec;
-    width: 600px;
+    width: 500px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .login-area{
@@ -59,11 +61,20 @@ form button{
     background-color: #181c2e;
     color: #fff;
     font-size: 1.3rem;
+    transition: all .3s;
+}
+
+form button:hover{
+    letter-spacing: 1px;
 }
 
 .login a{
     margin: 1.5rem 0;
     color: #000;
     cursor: pointer;
+}
+
+.login a:hover{
+    text-decoration: underline;
 }
 
