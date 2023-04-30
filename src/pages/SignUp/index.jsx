@@ -7,13 +7,21 @@ function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    function handleSubmit(e){
+        e.preventDefault()
+
+        if (name !== '' && email !== '' && password !== ''){
+            alert('fazer cadastro')
+        }
+    }
+
     return ( 
         <div className='container-center'>
             <div className='login'>
                 <div className='login-area'>
                     <img src={logo} alt="Logo do sistema de chamados" />
                 </div>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <h1>Nova Conta</h1>
                     <input 
                         type="text"
