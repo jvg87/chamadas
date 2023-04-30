@@ -4,18 +4,28 @@
     justify-content: center;
     align-items: center;
     background-color: #121212;
-    padding: 0 12px;
+    padding: 0 1rem;
 }
 
 .login{
     background-color: #eaeaec;
-    width: 500px;
+    width: 30rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    border-radius: 4px;
+    border-radius: 10px;
     overflow: hidden;
+    animation: slideY 1s;
+}
+
+@keyframes slideY{
+    from {
+        transform: translateY(150px);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
 
 .login-area{
