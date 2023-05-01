@@ -2,13 +2,13 @@ import { useState, useContext } from 'react';
 import './signIn.css';
 import logo from '../../assets/logo.png';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../contexts/auth'
+import { AuthContext } from '../../contexts/auth';
 
 function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { signIn } = useContext(AuthContext)
+    const { signIn } = useContext(AuthContext);
 
     function handleSignIn(e){
         e.preventDefault();
