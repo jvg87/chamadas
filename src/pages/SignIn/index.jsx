@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import './signIn.css';
+import '../../styles/pages/sigIn.scss';
 import logo from '../../assets/logo.png';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
