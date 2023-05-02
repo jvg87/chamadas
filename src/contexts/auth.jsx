@@ -111,9 +111,11 @@ function AuthProvider( { children } ){
             value={{
                 signed: !!user, // quando null, user = false
                 user,
+                setUser,
                 signIn,
                 signUp,
                 logout,
+                storageUser,
                 loadingAuth,
                 loading
             }}
