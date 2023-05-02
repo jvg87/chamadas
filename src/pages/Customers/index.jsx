@@ -44,22 +44,25 @@ function Customers() {
                 </Title>
                 <div className="container">
                     <form className="form-profile" onSubmit={handleRegister}>
-                        <label>Nome fantasia</label>
+                        <label htmlFor='nome'>Nome fantasia</label>
                         <input 
+                            id='nome'
                             type="text" 
                             placeholder="Nome da empresa"
                             value={nome}
                             onChange={(e) => setNome(e.target.value)}
                         />
-                        <label>CNPJ</label>
+                        <label htmlFor='cnpj'>CNPJ</label>
                         <input 
+                            id='cnpj'
                             type="CNPJ" 
                             placeholder="Digite o CNPJ"
                             value={cnpj}
                             onChange={(e) => setCnpj(e.target.value)}
                         />
-                        <label>Endereço</label>
+                        <label htmlFor='endereco'>Endereço</label>
                         <input 
+                            id='endereco'
                             type="text" 
                             placeholder="Endereço da empresa"
                             value={endereco}

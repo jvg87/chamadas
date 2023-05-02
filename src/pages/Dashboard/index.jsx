@@ -39,7 +39,9 @@ function Dashboard() {
                             <tr>
                                 <td data-label='Cliente'>Mercado esquina</td>
                                 <td data-label='Assunto'>Suporte</td>
-                                <td data-label='Status'>Em aberto</td>
+                                <td data-label='Status'>
+                                    <span className='badge' style={{backgroundColor: '#999'}}>Em aberto</span>
+                                </td>
                                 <td data-label='Cadastrado'>12/05/2023</td>
                                 <td data-label='#'>
                                     <button className='action' style={{ backgroundColor:'#3583f6' }}>

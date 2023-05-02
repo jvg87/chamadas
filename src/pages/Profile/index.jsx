@@ -96,21 +96,21 @@ function Profile() {
                 </Title>
                 <div className='container'>
                     <form className='form-profile' onSubmit={handleSubmit}>
-                        <label className='label-avatar'>
+                        <label htmlFor='avatar' className='label-avatar'>
                             <span>
                                 <FiUpload color='#fff' size={25}/>
                             </span>
-                            <input type="file" accept='image/*' onChange={handleFile}/><br />
+                            <input id='avatar' type="file" accept='image/*' onChange={handleFile}/><br />
                             {avatarUrl === null ? (
                                 <img src={avatar} alt="Foto de perfil" width={250}  height={250} />
                             ) : (
                                 <img src={avatarUrl} alt="Foto de perfil" width={250}  height={250} />
                             )}
                         </label>
-                        <label>Nome</label>
-                        <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
-                        <label>Email</label>
-                        <input type="text" value={email} disabled={true} />
+                        <label htmlFor='nome'>Nome</label>
+                        <input id='nome' type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
+                        <label htmlFor='email'>Email</label>
+                        <input id='email' type="text" value={email} disabled={true} />
                         <button type="submit">Salvar</button>
                     </form>
                 </div>
