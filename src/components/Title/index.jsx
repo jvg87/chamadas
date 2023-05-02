@@ -1,1 +1,12 @@
-import '../../styles/components/header.scss';
+import '../../styles/components/title.scss';
+
+function Title({ children, name }) {
+    return ( 
+        <div className='title'>
+            {children}
+            <span>{name}</span>
+        </div>
+    );
+}
+
+export default Title;
