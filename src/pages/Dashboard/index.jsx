@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 
 import Header from '../../components/Header';
 import Title from '../../components/Title';
+import Modal from '../../components/Modal';
 
 import '../../styles/pages/dashboard.scss';
 
@@ -160,6 +161,8 @@ function Dashboard() {
                 </>
             </div>
             
+            <Modal/>
+
         </div>
     );
 }
