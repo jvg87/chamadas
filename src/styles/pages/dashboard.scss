@@ -26,6 +26,11 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    span{
+        margin: 2em 0;
+        font-size: 1.2em;
+        font-weight: 600;
+    }
 }
 
 table{
@@ -114,4 +119,18 @@ table{
         border-radius: 3px;
         color: #fff;
     }
+}
+
+.btn-more{
+    margin: 1.5em 0;
+    padding: 0.5em 1em;
+    background-color: #181c2e;
+    border: 0;
+    border-radius: 5px;
+    font-size: 1.1em;
+    color: #fff;
+}
+
+h3{
+    margin: 1.5em 0;
 }

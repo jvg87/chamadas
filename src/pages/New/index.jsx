@@ -1,9 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+
 import { AuthContext } from '../../contexts/auth';
 import { db } from '../../services/firebaseConection';
-import { collection, getDocs, getDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, getDoc, doc, addDoc, updateDoc } from 'firebase/firestore';
 
 import { FiPlusCircle } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 import Header from '../../components/Header';
 import  Title from '../../components/Title';
@@ -14,6 +17,8 @@ const listRef = collection(db, 'customers');
 
 function New() {
     const { user } = useContext(AuthContext);
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     const [customers, setCustomers] = useState([]);
     const [loadingCustomer, setLoadingCustomer] = useState(true);
@@ -22,6 +27,7 @@ function New() {
     const [complemento, setComplemento] = useState('');
     const [assunto, setAssunto] = useState('Suporte');
     const [status, setStatus] = useState('Aberto');
+    const [idCustomer, setIdCustomer] = useState(false);
 
     useEffect(() => {
         async function loadCustomers(){
@@ -45,15 +51,38 @@ function New() {
                 setCustomers(list);
                 setLoadingCustomer(false);
 
+                if (id){
+                    loadId(list);
+                }
+
             })
             .catch((error) => {
                 console.log('Erro ao buscar clientes', error);
                 setLoadingCustomer(false);
-                setCustomers([ {id:'1', nome: 'Freela'} ]);            })
+                setCustomers([ {id:'1', nome: 'Freela'} ]);            
+            })
         }
 
         loadCustomers();
-    }, [])
+    }, [id]);
+
+    async function loadId(list){
+        const docRef = doc(db, 'chamados', id);
+        await getDoc(docRef)
+        .then((snapshot) => {
+            setAssunto(snapshot.data().assunto);
+            setStatus(snapshot.data().status);
+            setComplemento(snapshot.data().complemento);
+
+            let index = list.findIndex(item => item.id === snapshot.data().clienteId);
+            setCustomerSelected(index);
+            setIdCustomer(true);
+        })
+        .catch((error) => {
+            setIdCustomer(false);
+            console.log(error);
+        })
+    }
 
     function handleOptionChange(e){
         setStatus(e.target.value);
@@ -67,15 +96,63 @@ function New() {
         setCustomerSelected(e.target.value);
     }
 
+    async function handleRegister(e){
+        e.preventDefault();
+
+        // Atualizando chamado
+        if(idCustomer){
+            const docRef = doc(db, 'chamados', id);
+            await updateDoc(docRef, {
+                cliente: customers[customerSelected].nomeFantasia,
+                clienteId: customers[customerSelected].id,
+                assunto: assunto,
+                complemento: complemento,
+                status: status,
+                userId: user.uid
+            })
+            .then(() => {
+                toast.info('Chamado atualizado com sucesso!')
+                setCustomerSelected(0);
+                setComplemento('');
+                navigate('/dashboard')
+            })
+            .catch((error) => {
+                toast.error('Ops, erro ao atualizar esse chamado!')
+                console.log(error);
+            })
+            return;
+        }
+
+        // Registrar chamado
+        await addDoc(collection(db, 'chamados'), {
+            created: new Date(),
+            cliente: customers[customerSelected].nomeFantasia,
+            clienteId: customers[customerSelected].id,
+            assunto: assunto,
+            complemento: complemento,
+            status: status,
+            userId: user.uid
+        })
+        .then(() => {
+            toast.success('Chamado registrado!');
+            setComplemento('');
+            setCustomerSelected(0);
+        })
+        .catch((error) => {
+            toast.error('Ops, erro ao registrar, tente mais tarde!')
+            console.log(error);
+        })
+    }
+
     return ( 
         <div>
             <Header/>
             <div className="content">
-                <Title name='Novo chamado'>
+                <Title name={id ? 'Editando Chamado' : 'Novo Chamado'}>
                     <FiPlusCircle size={25}/>
                 </Title>
                 <div className="container">
-                    <form className='form-profile'>
+                    <form className='form-profile' onSubmit={handleRegister}>
                         <label htmlFor='clientes'>Clientes</label>
                         {
                             loadingCustomer ? (
