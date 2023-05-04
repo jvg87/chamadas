@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { FiPlus, FiMessageSquare, FiSearch, FiEdit2, FiX } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 import { Link } from 'react-router-dom';
 
-import { collection, getDocs, orderBy, limit, startAfter, query, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, orderBy, limit, startAfter, query, deleteDoc, doc,onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/firebaseConection';
 
 import { format } from 'date-fns';
@@ -36,6 +36,24 @@ function Dashboard() {
             const querySnapshot = await getDocs(q);
             setChamados([]);
             await updateState(querySnapshot);
+
+            const unsub = onSnapshot(collection(db, 'chamados'), (snapshot) => {
+                let list = [];
+                snapshot.forEach((doc) => {
+                    list.push({
+                        id: doc.id,
+                        assunto: doc.data().assunto,
+                        cliente: doc.data().cliente,
+                        clienteId: doc.data().clienteId,
+                        created: doc.data().created, 
+                        createdFormart: format(doc.data().created.toDate(), 'dd/MM/yyyy'),
+                        status: doc.data().status,
+                        complemento: doc.data().complemento
+                    })
+                })
+
+                setChamados(list);
+            })
 
             setLoading(false);
 
