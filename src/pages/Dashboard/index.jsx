@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
+
 import { FiPlus, FiMessageSquare, FiSearch, FiEdit2 } from 'react-icons/fi';
+
 import { Link } from 'react-router-dom';
+
 import { AuthContext } from '../../contexts/auth';
 import { collection, getDocs, orderBy, limit, startAfter, query } from 'firebase/firestore';
 import { db } from '../../services/firebaseConection';
@@ -23,6 +26,9 @@ function Dashboard() {
     const [isEmpty, setIsEmpty] = useState(false);
     const [lastDocs, setLastDocs] = useState();
     const [loadingMore, setLoadingMore] = useState(false);
+
+    const [showPostModal, setShowPostModal] = useState(false);
+    const [detail, setDetail] = useState();
 
     useEffect(() => {
         async function loadChamados(){
@@ -78,6 +84,11 @@ function Dashboard() {
         const querySnapshot = await getDocs(q);
         await updateState(querySnapshot);
 
+    }
+
+    function toggleModal(item){
+        setShowPostModal(!showPostModal);
+        setDetail(item);
     }
 
     if (loading){
@@ -141,7 +152,7 @@ function Dashboard() {
                                                 </td>
                                                 <td data-label='Cadastrado'>{item.createdFormart}</td>
                                                 <td data-label='#'>
-                                                    <button className='action' style={{ backgroundColor:'#3583f6' }}>
+                                                    <button className='action' style={{ backgroundColor:'#3583f6' }} onClick={() => toggleModal(item)}>
                                                         <FiSearch size={17} color='#fff'/>
                                                     </button>
                                                     <Link to={`/new/${item.id}`} className='action' style={{ backgroundColor:'#f6a935' }}>
@@ -161,7 +172,12 @@ function Dashboard() {
                 </>
             </div>
             
-            <Modal/>
+            {showPostModal && (
+                <Modal
+                    conteudo ={detail}
+                    close={() => setShowPostModal(!showPostModal)}
+                />
+            )}
 
         </div>
     );
