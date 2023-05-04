@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { FiPlus, FiMessageSquare, FiSearch, FiEdit2 } from 'react-icons/fi';
+import { FiPlus, FiMessageSquare, FiSearch, FiEdit2, FiX } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 import { Link } from 'react-router-dom';
 
-import { AuthContext } from '../../contexts/auth';
-import { collection, getDocs, orderBy, limit, startAfter, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, limit, startAfter, query, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../services/firebaseConection';
 
 import { format } from 'date-fns';
@@ -19,7 +19,6 @@ import '../../styles/pages/dashboard.scss';
 const listRef = collection(db, 'chamados')
 
 function Dashboard() {
-    const { logout } = useContext(AuthContext);
     const [chamados, setChamados] = useState([]);
     const [loading, setLoading] = useState(true);
     
@@ -91,6 +90,19 @@ function Dashboard() {
         setDetail(item);
     }
 
+    async function deleteChamado(id){
+        const docRef = doc(db, 'chamados', id );
+        await deleteDoc(docRef)
+        .then(() => {
+            toast.success('Chamado excluido com sucesso"')
+            
+        })
+        .catch((error) => {
+            toast.error('Ops, ocorreu algum problema!')
+            console.log(error);
+        })
+    }
+
     if (loading){
         return (
             <div>
@@ -158,6 +170,9 @@ function Dashboard() {
                                                     <Link to={`/new/${item.id}`} className='action' style={{ backgroundColor:'#f6a935' }}>
                                                         <FiEdit2 size={17} color='#fff'/>
                                                     </Link>
+                                                    <button className='action' style={{ backgroundColor:'#f63b35' }} onClick={() => deleteChamado(item.id)}>
+                                                        <FiX size={17} color='#fff'/>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         )
